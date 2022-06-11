@@ -1,2 +1,2 @@
 <?php 
-echo 'connect';
+echo 'connect index';
