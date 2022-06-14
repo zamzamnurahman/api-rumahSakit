@@ -5,15 +5,24 @@ $nama_user = $_POST['nama_user'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$result = mysqli_query($connect, "INSERT INTO user VALUES('','$nama_user','$email','$password')");
+if ($nama_user != null && $email != null && $password != null) {
 
-if (!$result) {
-  echo "gagal daftar";
+  $query = "INSERT INTO `user` (`nama`, `email`, `password`) VALUES ('$nama_user', '$email', '$password');";
+
+  $result = mysqli_query($connect, $query);
+
+  // echo $result;
+
+  if ($result < 1) {
+    echo "gagal daftar";
+  } else {
+
+    echo json_encode(array(
+      "nama user" => $nama_user,
+      "email" => $email,
+      "password" => $password
+    ));
+  }
 } else {
-
-  echo json_encode(array(
-    "nama user" => $nama_user,
-    "email" => $email,
-    "password" => $password
-  ));
+  echo "form belum terisi";
 }

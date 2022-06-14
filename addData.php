@@ -10,10 +10,15 @@ $keluhan = $_POST['keluhan'];
 $jenis_pemeriksaan = $_POST['jenis_pemeriksaan'];
 $jenis_pengobatan = $_POST['jenis_pengobatan'];
 
-$result = mysqli_query($connect, 'INSERT INTO pasien VALUES ("","' . $nama_pasien . '","' . $jenis_kelamin . '","' . $no_telp . '","' . $tanggal_lahir . '","' . $alamat . '", "'. $keluhan .'", "'.$jenis_pemeriksaan.'", "'.$jenis_pengobatan.'")');
+$result = mysqli_query(
+  $connect,
+  'INSERT INTO pasien VALUES (
+    "","' . $nama_pasien . '","' . $jenis_kelamin . '","' . $no_telp . '","' . $tanggal_lahir . '","' . $alamat . '", "' . $keluhan . '", "' . $jenis_pemeriksaan . '", "' . $jenis_pengobatan . '"
+  )'
+);
 
-if ($result) {
-
+// echo $result;
+if ($result > 0) {
   $data = array(
     "nama" => $_POST['nama_pasien'],
     "jenis kelamin" => $_POST['jenis_kelamin'],
@@ -25,4 +30,6 @@ if ($result) {
     "jenis pengobatan" => $_POST['jenis_pengobatan'],
   );
   echo json_encode($data);
+} else {
+  echo 'gagal tambah pasien';
 }
