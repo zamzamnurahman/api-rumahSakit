@@ -21,7 +21,6 @@ $result = mysqli_query(
 );
 
 if ($result) {
-
   $data = array(
     "nama" => $_POST['nama_pasien'],
     "jenis kelamin" => $_POST['jenis_kelamin'],

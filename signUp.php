@@ -8,15 +8,11 @@ $password = $_POST['password'];
 if ($nama_user != null && $email != null && $password != null) {
 
   $query = "INSERT INTO `user` (`nama`, `email`, `password`) VALUES ('$nama_user', '$email', '$password');";
-
   $result = mysqli_query($connect, $query);
-
-  // echo $result;
 
   if ($result < 1) {
     echo "gagal daftar";
   } else {
-
     echo json_encode(array(
       "nama user" => $nama_user,
       "email" => $email,

@@ -10,12 +10,9 @@ $keluhan = $_POST['keluhan'];
 $jenis_pemeriksaan = $_POST['jenis_pemeriksaan'];
 $jenis_pengobatan = $_POST['jenis_pengobatan'];
 
-$result = mysqli_query(
-  $connect,
-  'INSERT INTO pasien VALUES (
-    "","' . $nama_pasien . '","' . $jenis_kelamin . '","' . $no_telp . '","' . $tanggal_lahir . '","' . $alamat . '", "' . $keluhan . '", "' . $jenis_pemeriksaan . '", "' . $jenis_pengobatan . '"
-  )'
-);
+$query = " INSERT INTO `pasien` (`id_pasien`, `nama_pasien`, `jenis_kelamin`, `no_telp`, `tanggal_lahir`, `alamat`, `keluhan`, `jenis_pemeriksaan`, `jenis_pengobatan`) VALUES (NULL, '$nama_pasien', '$jenis_kelamin', '$no_telp', '$tanggal_lahir', '$alamat', '$keluhan', '$jenis_pemeriksaan', '$jenis_pengobatan')";
+
+$result = mysqli_query($connect, $query);
 
 // echo $result;
 if ($result > 0) {
