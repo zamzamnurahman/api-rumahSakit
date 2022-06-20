@@ -1,7 +1,8 @@
-*{
+* {
   box-sizing: border-box;
 
 }
+
 body {
   background-color: #F3EBF6;
   font-family: 'Ubuntu', sans-serif;
@@ -112,12 +113,12 @@ form.form1 {
 
 
 /* dashboard page */
-h1{
+h1 {
   font-size: 30px;
 }
 
-nav{
-padding: 10px 20px;
+nav {
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -126,7 +127,8 @@ padding: 10px 20px;
   /* background-color: red */
   ;
 }
-nav ul{
+
+nav ul {
   width: 70%;
   padding: 20px;
   display: flex;
@@ -136,7 +138,8 @@ nav ul{
   font-weight: bold;
 
 }
-nav ul li{
+
+nav ul li {
   padding: 10px;
   color: #fff;
   font-size: 20px;
@@ -147,12 +150,14 @@ nav ul li{
   transition: 0.3s;
   cursor: pointer;
 }
-nav ul li a:hover{
+
+nav ul li a:hover {
   background-color: #000;
   color: #FFFFFF;
   padding: 20px;
 }
-nav ul li a{
+
+nav ul li a {
   text-decoration: none;
   color: black;
 

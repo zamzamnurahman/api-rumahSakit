@@ -20,8 +20,8 @@
   <nav>
     <h1>SI RUMAH SAKIT</h1>
     <ul>
-      <li><a href="">Beranda</a> </li>
-      <li><a href="">Data Pasien</a></li>
+      <li><a href="dashboard.php">Beranda</a> </li>
+      <li><a href="pasien.php">Data Pasien</a></li>
       <li><a href="">Data Dokter</a></li>
       <li><a href="">Data Kamar</a></li>
       <li><a href="">Data user</a></li>
@@ -29,30 +29,7 @@
     </ul>
   </nav>
   <h1>Dashboard</h1>
-  <table>
-    <tr>
-      <td>no</td>
-      <td>nama</td>
-      <td>jenis kelamin</td>
-      <td>alamat</td>
-    </tr>
-    
-    <?php 
-
-    include "../conn.php";
-    $query = "SELECT * FROM pasien";
-    $result = mysqli_query($connect, $query);
-    $no = 1;
-    while($data = mysqli_fetch_array($result)){
-      echo "<tr>";
-      echo "<td>".$no++."</td>";
-      echo "<td>".$data['nama_pasien']."</td>";
-      echo "<td>".$data['jenis_kelamin']."</td>";
-      echo "<td>".$data['alamat']."</td>";
-     echo "</tr>";
-    }
-    ?>
-  </table>
+  
   <a href="logout.php">log out</a>
 </body>
 

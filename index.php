@@ -12,11 +12,13 @@
 <body>
   <div class="main">
     <p class="sign" align="center">Sign in</p>
-    <?php 
-      session_start();
-      if($_SESSION['status'] == 'gagal login'){
+    <?php
+    session_start();
+    if (isset($_SESSION['status'])) {
+      if ($_SESSION['status'] == 'gagal login') {
         echo "username dan password salah";
-      }
+      };
+    }
     ?>
     <form class="form1" action="admin/login.php" method="POST">
       <input class="un " type="text" name="username" align="center" placeholder="Username" required>
