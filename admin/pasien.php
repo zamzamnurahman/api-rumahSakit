@@ -1,27 +1,7 @@
 <?php
 session_start();
 include '../conn.php';
-if (isset($_POST['submit'])) {
-  $nama_pasien = $_POST['nama_pasien'];
-  $jenis_kelamin = $_POST['jenis_kelamin'];
-  $no_telp = $_POST['no_telp'];
-  $tanggal_lahir = $_POST['tanggal_lahir'];
-  $alamat = $_POST['alamat'];
-  $keluhan = $_POST['keluhan'];
-  $jenis_pemeriksaan = $_POST['jenis_pemeriksaan'];
-  $jenis_pengobatan = 0;
-  $antrian = $_POST['antrian'];
-  if ($_SESSION['status'] == 'login') {
-    $id_user = 1;
-  } else {
-    echo "Error for session login";
-    mysqli_close($connect);
-  }
 
-  $query = "INSERT INTO `pasien` (`id_user`, `id_pasien`, `nama_pasien`, `antrian`, `jenis_kelamin`, `no_telp`, `tanggal_lahir`, `alamat`, `keluhan`, `jenis_pemeriksaan`, `jenis_pengobatan`) VALUES ($id_user, NULL, '$nama_pasien', $antrian, '$jenis_kelamin', '$no_telp', '$tanggal_lahir', '$alamat', '$keluhan', '$jenis_pemeriksaan', '$jenis_pengobatan')";
-
-  $result = mysqli_query($connect, $query);
-}
 
 ?>
 
@@ -36,6 +16,79 @@ if (isset($_POST['submit'])) {
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
+<style>
+  nav {
+    position: fixed;
+    background-color: #ffffff;
+  }
+
+  .tabel-pasien {
+    width: 100%;
+    border: 2px solid #198754;
+  }
+
+
+  .pasien:hover {
+    background-color: #E8FFFF !important;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+  }
+
+  #bg-popup {
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    filter: blur(50);
+    background-color: rgba(0, 0, 0, 0.429);
+  }
+
+  #popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #E8FFFF;
+    height: 500px;
+    width: 600px;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 1px 2px 4px 5px rgba(0, 0, 0, 0.200);
+  }
+
+  .header {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 20px;
+
+  }
+
+  .content {
+    margin: 40px 30px;
+  }
+
+  .content table {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .content tr {
+    width: 100%;
+    padding: 10px;
+  }
+</style>
 
 <body>
   <?php
@@ -45,7 +98,7 @@ if (isset($_POST['submit'])) {
   }
   ?>
   <nav>
-    <h1>SI RUMAH SAKIT</h1>
+    <h3>SI RUMAH SAKIT</h3>
     <ul>
       <li><a href="dashboard.php">Beranda</a> </li>
       <li><a href="pasien.php">Data Pasien</a></li>
@@ -55,8 +108,64 @@ if (isset($_POST['submit'])) {
       <li><a href="">Pengaturan</a></li>
     </ul>
   </nav>
-  <div class="title" style="margin: 0 50px;">
-    <h1>Dashboard</h1>
+  <!-- modal -->
+  <div id="bg-popup">
+    <div id="popup">
+      <div class="header">
+        <h1>Profil Pasien</h1>
+        <a href="#" onclick='closePopup()'><button class="btn btn-success">X</button></a>
+      </div>
+      <div class="content">
+        <table>
+          <tr>
+            <td>Antrian </td>
+            <td>:</td>
+            <td id="antrian"></td>
+          </tr>
+          <tr>
+            <td>Id Pasien </td>
+            <td>:</td>
+            <td id="id_pasien"></td>
+          </tr>
+          <tr>
+            <td>Nama Lengkap</td>
+            <td>:</td>
+            <th id="nama"></th>
+          </tr>
+          <tr>
+            <td>Jenis Kelamin</td>
+            <td>:</td>
+            <td id="jk"></td>
+          </tr>
+          <tr>
+            <td>Tanggal Lahir</td>
+            <td>:</td>
+            <td id="tgl"></td>
+          </tr>
+          <tr>
+            <td>Alamat</td>
+            <td>:</td>
+            <td id="alamat"></td>
+          </tr>
+          <tr>
+            <td>No.Telepon</td>
+            <td>:</td>
+            <td id="no"></td>
+          </tr>
+          <tr>
+            <td>Keluhan</td>
+            <td>:</td>
+            <td id="keluhan"></td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+
+    <!-- FORM -->
+  </div>
+  <div class="title" style="padding: 150px 30px 10px 30px;">
+    <h4><strong>Dashboard Pasien</strong></h4>
     <?php
     $query2 = "SELECT * FROM pasien LIMIT 1";
     $result2 = mysqli_query($connect, $query2);
@@ -68,48 +177,47 @@ if (isset($_POST['submit'])) {
     }
 
     // Antrian
-    echo "<h1>Nomor Antrian : " . $antrian . "</h1>";
+    echo "<h5>Nomor Antrian : " . $antrian . "</h5>";
     ?>
   </div>
-  <div class="row " style="margin: 50px;">
-    <div class="col-md-7">
-    <div class="btn btn-primary">laki-laki</div>
-    <div class="btn btn-primary">_</div>
-    <div class="btn btn-primary">_</div>
+  <div class="row " style="margin: 30px;">
+    <div class="col-md-12">
+      <a href="tambah_pasien.php"><button class="btn btn-success" style="margin: 5px 0px;">Tambah Pasien</button></a>
 
-      <table cellpadding="10">
-        <tr align="center" bgcolor='whiteGrey'>
+
+      <table class="tabel-pasien" cellPadding='10'>
+        <tr align="center" class="bg-success text-white">
           <th>No</th>
-          <th>ID Pasien</th>
           <th>Antrian</th>
-          <th>nama</th>
+          <th>Nama</th>
+          <th>Jenis Kelamin</th>
           <th>Tanggal Lahir</th>
           <th>Alamat</th>
           <th>No Telepon</th>
-          <th>keluhan</th>
-          <th>Create by</th>
+          <th>Keluhan</th>
+          <th>by</th>
 
         </tr>
-
         <?php
 
         $query = "SELECT * FROM pasien";
         $result = mysqli_query($connect, $query);
         $no = 1;
+        // $data = mysqli_fetch_array($result);
+        // var_dump($data);
         while ($data = mysqli_fetch_array($result)) {
-          // var_dump($data);
-          if ($data['jenis_kelamin']  == 'laki-laki') {
-            $jk =  "<td bgcolor='greenGrey'>";
-          } else if ($data['jenis_kelamin'] == 'perempuan') {
-            $jk = "<td bgcolor='pink'>";
+          $antrian = $data['antrian'];
+          if ($no % 2 == 0) {
+            $row = "<tr align='center' class='bg-light pasien'>";
+          } else if ($no % 2 == 1) {
+            $row = "<tr align='center' class='pasien'>";
           }
-
           if ($data['jenis_pemeriksaan'] == 0) {
-            $jp = '<td bgcolor="grey">';
+            $jp = '<td class="bg-primary text-white">';
           } else if ($data['jenis_pemeriksaan'] == 1) {
-            $jp = '<td bgcolor="blue">';
+            $jp = '<td class="bg-warning text-white">';
           } else if ($data['jenis_pemeriksaan'] == 2) {
-            $jp = '<td bgcolor="red">';
+            $jp = '<td class="bg-danger text-white">';
           }
           //create by
           if ($data['id_user'] == 1) {
@@ -119,87 +227,51 @@ if (isset($_POST['submit'])) {
           }
 
 
-          echo "<tr align='center'>";
-          echo "<td bgcolor='whiteGrey'>" . $no++ . "</td>";
-          echo $jk . "" . $data['id_pasien'] . "</>";
-          echo "<td>" . $data['antrian'] . "</td>";
-          echo "<td>" . $data['nama_pasien'] . "</td>";
+          echo $row;
+          echo "<td class='bg-success text-white'>" . $no++ . "</td>";
+          echo  $jp . "" . $data['antrian'] . "</td>";
+        ?>
+
+          <td><a href='#' onclick='openPopup("<?= $data["antrian"]; ?>","<?= $data["id_pasien"]; ?>","<?= $data["nama_pasien"]; ?>","<?= $data["jenis_kelamin"]; ?>","<?= $data["tanggal_lahir"]; ?>","<?= $data["alamat"]; ?>","<?= $data["no_telp"]; ?>","<?= $data["keluhan"]; ?>")'> <?= strtoupper($data['nama_pasien']); ?> </a></td>
+        <?php
+          echo "<td>" . $data['jenis_kelamin'] . "</td>";
           echo "<td>" . $data['tanggal_lahir'] . "</td>";
           echo "<td>" . $data['alamat'] . "</td>";
           echo "<td>" . $data['no_telp'] . "</td>";
-          echo $jp . "" . $data['keluhan'] . "</td>";
-          echo "<td>" . $create ." (".$data['id_user']. ")</td>";
+          echo "<td>" . $data['keluhan'] . "</td>";
+          echo "<td>" . $create . " (" . $data['id_user'] . ")</td>";
           echo "</tr>";
         }
+        // echo $antrian;
+
         ?>
       </table>
     </div>
-    <div class="table-right col-md-4 offset-md-1 ">
-      <h2>Formulir Tambah Pasien</h2>
-      <form action="pasien.php" method="post">
 
-        <table>
-          <tr>
-            <td>Antrian</td>
-            <td>:</td>
-            <td><input type="text" name="antrian"></td>
-          </tr>
-          <tr>
-            <td>Nama</td>
-            <td>:</td>
-            <td><input type="text" name="nama_pasien" id="nama_pasien"></td>
-          </tr>
-          <tr>
-            <td>Jenis Kelamin</td>
-            <td>:</td>
-            <td><input type="radio" name="jenis_kelamin" id="jenis_kelamin" value="laki-laki">laki-laki
-              <input type="radio" name="jenis_kelamin" id="jenis_kelamin" value="perempuan">Perempuan
-            </td>
-          </tr>
-          <tr>
-            <td>No Telepon</td>
-            <td>:</td>
-            <td><input type="tel" name="no_telp" id="no_telp"></td>
-          </tr>
-          <tr>
-            <td>Tanggal Lahir</td>
-            <td>:</td>
-            <td><input type="date" name="tanggal_lahir" id="tanggal_lahir"></td>
-          </tr>
-          <tr>
-            <td>Alamat</td>
-            <td>:</td>
-            <td><textarea name="alamat" id="alamat" cols="30" rows="2"></textarea></td>
-          </tr>
-          <tr>
-            <td>Keluhan</td>
-            <td>:</td>
-            <td><textarea name="keluhan" id="keluhan" cols="30" rows="5"></textarea></td>
-          </tr>
-          <tr>
-            <td>Jenis Pemeriksaan</td>
-            <td>:</td>
-            <td>
-              <select name="jenis_pemeriksaan">
-                <option value="0"> Pemeriksaan Umum
-                </option>
-                <option value="1"> Pemeriksaan Khusus
-                </option>
-                <option value="2"> Pemeriksaan Darurat
-                </option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td><input class="btn btn-warning" type="submit" value="Tambah Pasien" name="submit"></td>
-          </tr>
-        </table>
-      </form>
-    </div>
   </div>
   <a href="logout.php">log out</a>
+
+  <script>
+    function openPopup(antrian, id_pasien, nama, jk, tgl, alamat, no, keluhan) {
+      // console.log(nama);
+      document.getElementById("popup").style.display = 'inline';
+      document.getElementById("bg-popup").style.display = 'inline';
+      document.getElementById("antrian").innerText = antrian;
+      document.getElementById("id_pasien").innerText = id_pasien;
+      document.getElementById("nama").innerText = nama;
+      document.getElementById("jk").innerText = jk;
+      document.getElementById("tgl").innerText = tgl;
+      document.getElementById("alamat").innerText = alamat;
+      document.getElementById("no").innerText = no;
+      document.getElementById("keluhan").innerText = keluhan;
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = 'none';
+      document.getElementById("bg-popup").style.display = 'none';
+
+    }
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>
