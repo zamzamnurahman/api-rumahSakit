@@ -2,7 +2,17 @@
 session_start();
 include '../conn.php';
 
+if (isset($_GET['id'])) {
+  $id = $_GET['id'];
 
+  $query = "DELETE FROM pasien WHERE id_pasien = $id ";
+  $result = mysqli_query($connect, $query);
+  if ($result) {
+    echo "<script> alert('Antrian berhasil di Update') </script>";
+  } else {
+    echo "<script> alert('Antrian gagal di update') </script>";
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +30,25 @@ include '../conn.php';
   nav {
     position: fixed;
     background-color: #ffffff;
+  }
+
+  .antrian {
+    display: flex;
+  }
+
+  .antrian h4 {
+    margin-right: 20px;
+  }
+
+  .antrian a img {
+    height: 20px;
+    width: 20px;
+    align-items: center;
+  }
+
+  .no-antrian {
+    padding: 0 10px;
+    font-weight: bold;
   }
 
   .tabel-pasien {
@@ -164,25 +193,38 @@ include '../conn.php';
 
     <!-- FORM -->
   </div>
-  <div class="title" style="padding: 150px 30px 10px 30px;">
-    <h4><strong>Dashboard Pasien</strong></h4>
-    <?php
-    $query2 = "SELECT * FROM pasien LIMIT 1";
-    $result2 = mysqli_query($connect, $query2);
-    $data2 = mysqli_fetch_assoc($result2);
-    if (isset($data2["antrian"])) {
-      $antrian = $data2["antrian"];
-    } else {
-      $antrian = 0;
-    }
 
-    // Antrian
-    echo "<h5>Nomor Antrian : " . $antrian . "</h5>";
-    ?>
+  <div class="section-antrian" style="padding: 150px 30px 10px 30px;">
+    <div class="title">
+      <h3><strong>Dashboard Pasien</strong></h3>
+    </div>
+    <div class="antrian">
+      <h4>Antrian ke : </h4>
+      <?php
+      $query2 = "SELECT * FROM pasien LIMIT 1";
+      $result2 = mysqli_query($connect, $query2);
+      $data2 = mysqli_fetch_assoc($result2);
+      if (isset($data2["antrian"])) {
+        $antrian = $data2["antrian"];
+      } else {
+        $antrian = 0;
+      }
+
+      // Antrian
+      echo "<h3 class='no-antrian'>" . $antrian . "</h3>";
+      ?>
+    </div>
+
   </div>
+
   <div class="row " style="margin: 30px;">
     <div class="col-md-12">
       <a href="tambah_pasien.php"><button class="btn btn-success" style="margin: 5px 0px;">Tambah Pasien</button></a>
+      <form action="" method="GET" style="display: inline;;">
+        <label for="Search"> Cari Pasien </label>
+        <input type="text" name="cari" id="cari" autofocus placeholder="Masukkan Nama Pasien" size="30" autocomplete="off">
+        <button class="btn btn-warning">Cari</button>
+      </form>
 
 
       <table class="tabel-pasien" cellPadding='10'>
@@ -196,16 +238,21 @@ include '../conn.php';
           <th>No Telepon</th>
           <th>Keluhan</th>
           <th>by</th>
+          <th>Cheklist</th>
 
         </tr>
         <?php
 
-        $query = "SELECT * FROM pasien";
-        $result = mysqli_query($connect, $query);
+        if (isset($_GET['cari'])) {
+          $cari =  $_GET['cari'];
+          $query = "SELECT * FROM pasien WHERE nama_pasien LIKE '%$cari%' ";
+          $result = mysqli_query($connect, $query);
+        } else {
+          $query = "SELECT * FROM pasien";
+          $result = mysqli_query($connect, $query);
+        }
         $no = 1;
-        // $data = mysqli_fetch_array($result);
-        // var_dump($data);
-        while ($data = mysqli_fetch_array($result)) {
+        while ($data = mysqli_fetch_assoc($result)) {
           $antrian = $data['antrian'];
           if ($no % 2 == 0) {
             $row = "<tr align='center' class='bg-light pasien'>";
@@ -240,6 +287,7 @@ include '../conn.php';
           echo "<td>" . $data['no_telp'] . "</td>";
           echo "<td>" . $data['keluhan'] . "</td>";
           echo "<td>" . $create . " (" . $data['id_user'] . ")</td>";
+          echo "<td> <a href='pasien.php?id=" . $data['id_pasien'] . "'><button class='btn btn-success'>Selesai</button></a> </td>";
           echo "</tr>";
         }
         // echo $antrian;
