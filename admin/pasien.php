@@ -142,7 +142,7 @@ if (isset($_GET['id'])) {
     <div id="popup">
       <div class="header">
         <h1>Profil Pasien</h1>
-        <a href="#" onclick='closePopup()'><button class="btn btn-success">X</button></a>
+        <a href="" onclick='closePopup()'><button class="btn btn-success">X</button></a>
       </div>
       <div class="content">
         <table>
@@ -189,10 +189,15 @@ if (isset($_GET['id'])) {
 
         </table>
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <center><a id="edit-pasien"><button class="btn btn-success">Edit Pasien</button></a></center>
+        </div>
+      </div>
     </div>
 
-    <!-- FORM -->
   </div>
+  <!-- FORM -->
 
   <div class="section-antrian" style="padding: 150px 30px 10px 30px;">
     <div class="title">
@@ -219,12 +224,13 @@ if (isset($_GET['id'])) {
 
   <div class="row " style="margin: 30px;">
     <div class="col-md-12">
-      <a href="tambah_pasien.php"><button class="btn btn-success" style="margin: 5px 0px;">Tambah Pasien</button></a>
+      <a href="form_pasien.php"><button class="btn btn-success" style="margin: 5px 0px;">Tambah Pasien</button></a>
       <form action="" method="GET" style="display: inline;;">
         <label for="Search"> Cari Pasien </label>
         <input type="text" name="cari" id="cari" autofocus placeholder="Masukkan Nama Pasien" size="30" autocomplete="off">
         <button class="btn btn-warning">Cari</button>
       </form>
+      <a href="../admin/pasien.php"><button class="btn btn-warning"><img src="../assets/images/refresh.svg" alt=""></button></a>
 
 
       <table class="tabel-pasien" cellPadding='10'>
@@ -306,6 +312,8 @@ if (isset($_GET['id'])) {
       document.getElementById("bg-popup").style.display = 'inline';
       document.getElementById("antrian").innerText = antrian;
       document.getElementById("id_pasien").innerText = id_pasien;
+      var modalEdit = document.getElementById("edit-pasien");
+      modalEdit.setAttribute('href', "form_pasien.php?id=" + id_pasien);
       document.getElementById("nama").innerText = nama;
       document.getElementById("jk").innerText = jk;
       document.getElementById("tgl").innerText = tgl;

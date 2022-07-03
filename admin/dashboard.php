@@ -7,7 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
+<style>
+  nav {
+    position: fixed;
+    background-color: #ffffff;
+  }
+</style>
 
 <body>
 
@@ -18,7 +25,7 @@
   }
   ?>
   <nav>
-    <h1>SI RUMAH SAKIT</h1>
+    <h3>SI RUMAH SAKIT</h3>
     <ul>
       <li><a href="dashboard.php">Beranda</a> </li>
       <li><a href="pasien.php">Data Pasien</a></li>
@@ -29,7 +36,7 @@
     </ul>
   </nav>
   <h1>Dashboard</h1>
-  
+
   <a href="logout.php">log out</a>
 </body>
 

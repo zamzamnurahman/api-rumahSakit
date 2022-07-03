@@ -5,10 +5,10 @@ include "../conn.php";
 $query = "SELECT antrian FROM pasien ORDER by antrian DESC LIMIT 1";
 $result = mysqli_query($connect, $query);
 $data = mysqli_fetch_array($result);
-// var_dump($data['antrian']);
-if($data == 0){
+// var_dump($data);
+if ($data == null) {
   $antrian = 0;
-}else{
+} else {
   $antrian = $data['antrian'];
 }
 $response = 'gagal';
@@ -59,7 +59,8 @@ if (isset($_POST['submit'])) {
     box-shadow: 2px 3px 6px #198754;
     border: none;
   }
-  .kembali{
+
+  .kembali {
     margin: 10px 0;
   }
 </style>
@@ -71,55 +72,107 @@ if (isset($_POST['submit'])) {
     <div class="card form">
       <h2>Formulir Tambah Pasien</h2>
       <form action="" method="post">
+        <?php
+        $get = isset($_GET['id']);
+        if ($get) {
+          $id = $_GET['id'];
+          $query = "SELECT * FROM pasien WHERE id_pasien = $id";
+          $result = mysqli_query($connect, $query);
+          $data = mysqli_fetch_assoc($result);
+        }
+        ?>
 
         <table>
           <tr>
             <td>Antrian</td>
             <td>:</td>
-            <td><input type="text" name="antrian" value="<?= $antrian + 1; ?>" required></td>
+            <td><input value="<?php if ($get) {
+                                echo $data['antrian'];
+                              } else {
+                                echo $antrian + 1;
+                              } ?>" type="text" name="antrian" required></td>
           </tr>
           <tr>
             <td>Nama</td>
             <td>:</td>
-            <td><input type="text" name="nama_pasien" id="nama_pasien" required></td>
+            <td><input value="<?php if ($get) {
+                                echo $data['nama_pasien'];
+                              } ?>" type="text" name="nama_pasien" required></td>
           </tr>
           <tr>
             <td>Jenis Kelamin</td>
             <td>:</td>
-            <td><input type="radio" name="jenis_kelamin" id="jenis_kelamin" value="laki-laki" required>laki-laki
-              <input type="radio" name="jenis_kelamin" id="jenis_kelamin" value="perempuan">Perempuan
+            <td><input <?php if ($get) {
+                          if ($data['jenis_kelamin'] == 'laki-laki') {
+                            echo "checked";
+                          }
+                        } ?> type="radio" name="jenis_kelamin" id="jenis_kelamin" value="laki-laki" required>laki-laki
+
+              <input <?php if ($get) {
+                        if ($data['jenis_kelamin'] == 'perempuan') {
+                          echo "checked";
+                        }
+                      } ?> type="radio" name="jenis_kelamin" id="jenis_kelamin" value="perempuan">Perempuan
             </td>
           </tr>
           <tr>
             <td>No Telepon</td>
             <td>:</td>
-            <td><input type="tel" name="no_telp" id="no_telp" required></td>
+            <td><input value=" <?php if ($get) {
+
+                                  echo $data['no_telp'];
+                                } ?>" type="tel" name="no_telp" id="no_telp" required></td>
           </tr>
           <tr>
             <td>Tanggal Lahir</td>
             <td>:</td>
-            <td><input type="date" name="tanggal_lahir" id="tanggal_lahir" required></td>
+            <td><input value="<?php if ($get) {
+                                echo $data['tanggal_lahir'];
+                              } ?>" type="date" name="tanggal_lahir" id="tanggal_lahir"></td>
           </tr>
           <tr>
             <td>Alamat</td>
             <td>:</td>
-            <td><textarea name="alamat" id="alamat" cols="30" rows="2" required></textarea></td>
+            <td>
+              <textarea name="alamat" cols="30" rows="2" required> <?php if ($get) {
+                                                                      echo $data['alamat'];
+                                                                    } ?></textarea>
+            </td>
           </tr>
           <tr>
             <td>Keluhan</td>
             <td>:</td>
-            <td><textarea name="keluhan" id="keluhan" cols="30" rows="5" required></textarea></td>
+            <td>
+              <textarea name="keluhan" cols="30" rows="5" required><?php if ($get) {
+                                                                      echo $data['keluhan'];
+                                                                    } ?></textarea>
+            </td>
           </tr>
           <tr>
             <td>Jenis Pemeriksaan</td>
             <td>:</td>
             <td>
               <select name="jenis_pemeriksaan" required>
-                <option value="0"> Pemeriksaan Umum
+                <option value="0" <?php if ($get) {
+                                    if ($data['jenis_pemeriksaan'] == "0") {
+                                      echo "selected";
+                                    }
+                                  }
+                                  ?>> Pemeriksaan Umum
                 </option>
-                <option value="1"> Pemeriksaan Khusus
+                <option value="1" <?php if ($get) {
+                                    if ($data['jenis_pemeriksaan'] == "1") {
+                                      echo "selected";
+                                    }
+                                  }
+                                  ?>> Pemeriksaan Khusus
                 </option>
-                <option value="2"> Pemeriksaan Darurat
+                <option value="2" <?php if ($get) {
+                                    if ($data['jenis_pemeriksaan'] == "2") {
+                                      echo "selected";
+                                    }
+                                  }
+                                  ?>> Pemeriksaan Darurat
                 </option>
               </select>
             </td>

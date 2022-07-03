@@ -21,7 +21,7 @@
     }
     ?>
     <form class="form1" action="admin/login.php" method="POST">
-      <input class="un " type="text" name="username" align="center" placeholder="Username" required>
+      <input class="un " type="text" name="username" align="center" placeholder="Username" required autocomplete="off">
       <input class="pass" type="password" name="password" align="center" placeholder="Password" required>
       <button name="submit" class="submit">Sign in</button>
       <p class="forgot" align="center"><a href="#">Forgot Password?</p>
